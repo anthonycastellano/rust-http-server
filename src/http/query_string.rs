@@ -17,7 +17,7 @@ impl<'buf> QueryString<'buf> {
     }
 }
 
-impl<'buf> From<&'buf  str> for  QueryString<'buf> {
+impl<'buf> From<&'buf str> for QueryString<'buf> {
     fn from(s: &'buf str) ->  Self {
         let mut data = HashMap::new();
 
