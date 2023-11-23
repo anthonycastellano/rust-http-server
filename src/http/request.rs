@@ -1,21 +1,17 @@
 use super::method::{Method, MethodError};
+use super::{QueryString};
 use std::str::Utf8Error;
 use std::convert::TryFrom;
 use std::error::Error;
 use std::fmt::{Display, Debug, Formatter, Result as FmtResult};
 use std::str;
 
+#[derive(Debug)]
 pub struct Request<'buf> { // 'buf is lifetime
     path: &'buf str,
-    query_string: Option<&'buf str>,
+    query_string: Option<QueryString<'buf>>,
     method: Method,
 }
-
-// impl Request {
-//     fn from_byte_array(buf: &[u8]) -> Result<Self, Self::Error> {
-
-//     }
-// }
 
 impl<'buf> TryFrom<&'buf [u8]> for Request<'buf> {
     type Error = ParseError;
@@ -35,7 +31,7 @@ impl<'buf> TryFrom<&'buf [u8]> for Request<'buf> {
 
         let mut query_string = None;
         if let Some(i) = path.find('?') {
-            query_string = Some(&path[i + 1..]); // this means + 1 byte, not character
+            query_string = Some(QueryString::from(&path[i + 1..])); // this means + 1 byte, not character
             path = &path[..i];
         }
 

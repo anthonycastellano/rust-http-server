@@ -1,6 +1,5 @@
 use crate::http::Request;
 use std::convert::TryFrom;
-// use std::convert::TryInto;
 use std::net::TcpListener;
 use std::io::Read;
 
@@ -30,7 +29,9 @@ impl Server {
 
                             // let res: &Result<Request, _> = &buffer[..].try_into();
                             match Request::try_from(&buffer[..]) {
-                                Ok(request) => {},
+                                Ok(request) => {
+                                    dbg!(request);
+                                },
                                 Err(e) => println!("Failed to parse a request: {}", e),
                             }
                         }
